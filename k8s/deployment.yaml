@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mp152-api
+  labels:
+    app: mp152-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mp152-api
+  template:
+    metadata:
+      labels:
+        app: mp152-api
+    spec:
+      containers:
+        - name: mp152-api
+          image: mp152-api:1.0
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

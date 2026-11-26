@@ -1,0 +1,54 @@
+stages:
+  clean:
+    cmd: python src/mp152_cinema/cleaning.py
+    deps:
+      - src/mp152_cinema/cleaning.py
+      - data/raw/train.csv
+      - params.yaml
+    outs:
+      - data/train_clean.csv
+    params:
+      - params.yaml:
+          - data
+          - paths
+
+  train:
+    cmd: python src/mp152_cinema/training.py
+    deps:
+      - src/mp152_cinema/training.py
+      - data/train_clean.csv
+      - params.yaml
+    outs:
+      - mlflow.db
+    params:
+      - params.yaml:
+          - model
+          - mlflow
+          - paths
+
+  evaluate:
+    cmd: python src/mp152_cinema/evaluation.py
+    deps:
+      - src/mp152_cinema/evaluation.py
+      - data/train_clean.csv
+      - data/raw/later.csv
+      - mlflow.db
+      - params.yaml
+    outs:
+      - reports/findings.yaml:
+          cache: false
+    params:
+      - params.yaml:
+          - monitoring
+          - mlflow
+          - paths
+
+  predict:
+    cmd: python src/mp152_cinema/predict.py
+    deps:
+      - src/mp152_cinema/predict.py
+      - data/raw/holdout_features.csv
+      - mlflow.db
+      - params.yaml
+    outs:
+      - predictions/holdout_predictions.csv

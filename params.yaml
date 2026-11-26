@@ -1,0 +1,51 @@
+# params.yaml — all paths and hyperparameters for MP152
+# Read via: yaml.safe_load(open("params.yaml"))
+
+paths:
+  train_raw: data/raw/train.csv
+  later_raw: data/raw/later.csv
+  holdout_raw: data/raw/holdout_features.csv
+  train_clean: data/train_clean.csv
+  model_dir: models/
+  model_joblib: models/model.joblib
+  predictions_out: predictions/holdout_predictions.csv
+  findings: reports/findings.yaml
+  mlflow_db: sqlite:///mlflow.db
+
+mlflow:
+  experiment_name: mp152_cinema_occupancy
+  registered_model_name: mp152_model
+  champion_alias: champion
+
+data:
+  sentinel_value: 9999
+  sentinel_column: days_since_release
+  unit_mixup_column: ticket_price_rs
+  unit_mixup_group: Highway
+  unit_mixup_factor: 100
+  leaking_column: null
+  duplicate_subset: null   # null means all columns except record_id
+  language_column: language
+  location_column: location
+
+model:
+  v1:
+    n_estimators: 200
+    max_depth: 8
+    min_samples_leaf: 5
+    random_state: 42
+  v1b:
+    n_estimators: 100
+    max_depth: 6
+    min_samples_leaf: 3
+    random_state: 42
+  v1c:
+    n_estimators: 300
+    max_depth: 10
+    min_samples_leaf: 4
+    random_state: 42
+
+monitoring:
+  psi_bins: 10
+  retrain_cutoff: 0.70       # first 70% of later.csv for retraining
+  promotion_threshold: 0.10  # promote v2 if MAE is at least 10% lower than v1

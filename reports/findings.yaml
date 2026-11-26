@@ -1,0 +1,53 @@
+group_id: G215
+problem_id: MP152
+data_issues:
+  leaking_column:
+    present: false
+    column: null
+  unit_mixup:
+    present: true
+    column: ticket_price_rs
+    group_value: Highway
+    factor: 100
+  sentinel_value:
+    present: true
+    column: days_since_release
+    value: 9999
+    count: 65
+  duplicate_rows:
+    present: true
+    count: 44
+  stuck_sensor:
+    present: false
+    column: null
+    start_date: null
+    end_date: null
+  target_typos:
+    present: false
+    count: null
+  spelling_variants:
+    present: true
+    column: language
+    true_levels: 3
+tracking:
+  experiment_name: mp152_cinema_occupancy
+  best_run_id: 0b6fc5f35c374d8fa4b3853b741d2ead
+  registered_model_name: mp152_model
+  champion_version: 4
+monitoring:
+  psi:
+    ticket_price_rs: 0.0921
+    days_since_release: 0.0199
+    star_rating: 0.0223
+    show_hour: 0.0487
+    screen_seats: 0.0638
+    distance_to_metro_km: 4.6614
+  most_drifted_feature: distance_to_metro_km
+  mae_by_group:
+    City Centre: 18.1862
+    Mall: 11.7042
+    Highway: 10.0504
+  worst_served_group: City Centre
+  mae_v1_on_check: 12.6593
+  mae_v2_on_check: 7.4767
+  decision: promote
